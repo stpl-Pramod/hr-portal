@@ -177,7 +177,7 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal bg-slate-700 border-slate-600 text-white hover:bg-slate-600",
+                      "w-full justify-start text-left font-normal bg-slate-700 border-slate-600 text-white hover:bg-slate-600 hover:border-slate-500",
                       !formData.start_date && "text-slate-400",
                     )}
                   >
@@ -185,14 +185,42 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
                     {formData.start_date ? format(formData.start_date, "PPP") : "Pick a date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700">
+                <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700" align="start">
                   <Calendar
                     mode="single"
                     selected={formData.start_date}
-                    onSelect={(date) => setFormData({ ...formData, start_date: date })}
-                    disabled={(date) => date < new Date()}
+                    onSelect={(date) => {
+                      setFormData({ ...formData, start_date: date })
+                      // Reset end date if it's before the new start date
+                      if (date && formData.end_date && formData.end_date < date) {
+                        setFormData(prev => ({ ...prev, start_date: date, end_date: undefined }))
+                      }
+                    }}
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                     initialFocus
-                    className="text-white"
+                    className="rounded-md border-0"
+                    classNames={{
+                      months: "flex w-full flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                      month: "space-y-4",
+                      caption: "flex justify-center pt-1 relative items-center text-white",
+                      caption_label: "text-sm font-medium text-white",
+                      nav: "space-x-1 flex items-center",
+                      nav_button: "h-7 w-7 bg-transparent p-0 text-slate-400 hover:text-white hover:bg-slate-700",
+                      nav_button_previous: "absolute left-1",
+                      nav_button_next: "absolute right-1",
+                      table: "w-full border-collapse space-y-1",
+                      head_row: "flex",
+                      head_cell: "text-slate-400 rounded-md w-9 font-normal text-[0.8rem]",
+                      row: "flex w-full mt-2",
+                      cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-slate-700 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                      day: "h-9 w-9 p-0 font-normal text-white hover:bg-slate-700 hover:text-white aria-selected:opacity-100",
+                      day_selected: "bg-blue-600 text-white hover:bg-blue-700 hover:text-white focus:bg-blue-600 focus:text-white",
+                      day_today: "bg-slate-700 text-white",
+                      day_outside: "text-slate-500 opacity-50",
+                      day_disabled: "text-slate-500 opacity-50 cursor-not-allowed",
+                      day_range_middle: "aria-selected:bg-slate-700 aria-selected:text-white",
+                      day_hidden: "invisible",
+                    }}
                   />
                 </PopoverContent>
               </Popover>
@@ -205,7 +233,7 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal bg-slate-700 border-slate-600 text-white hover:bg-slate-600",
+                      "w-full justify-start text-left font-normal bg-slate-700 border-slate-600 text-white hover:bg-slate-600 hover:border-slate-500",
                       !formData.end_date && "text-slate-400",
                     )}
                   >
@@ -213,14 +241,40 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
                     {formData.end_date ? format(formData.end_date, "PPP") : "Pick a date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700">
+                <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700" align="start">
                   <Calendar
                     mode="single"
                     selected={formData.end_date}
                     onSelect={(date) => setFormData({ ...formData, end_date: date })}
-                    disabled={(date) => date < (formData.start_date || new Date())}
+                    disabled={(date) => {
+                      const today = new Date(new Date().setHours(0, 0, 0, 0))
+                      const startDate = formData.start_date || today
+                      return date < startDate
+                    }}
                     initialFocus
-                    className="text-white"
+                    className="rounded-md border-0"
+                    classNames={{
+                      months: "flex w-full flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                      month: "space-y-4",
+                      caption: "flex justify-center pt-1 relative items-center text-white",
+                      caption_label: "text-sm font-medium text-white",
+                      nav: "space-x-1 flex items-center",
+                      nav_button: "h-7 w-7 bg-transparent p-0 text-slate-400 hover:text-white hover:bg-slate-700",
+                      nav_button_previous: "absolute left-1",
+                      nav_button_next: "absolute right-1",
+                      table: "w-full border-collapse space-y-1",
+                      head_row: "flex",
+                      head_cell: "text-slate-400 rounded-md w-9 font-normal text-[0.8rem]",
+                      row: "flex w-full mt-2",
+                      cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-slate-700 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                      day: "h-9 w-9 p-0 font-normal text-white hover:bg-slate-700 hover:text-white aria-selected:opacity-100",
+                      day_selected: "bg-blue-600 text-white hover:bg-blue-700 hover:text-white focus:bg-blue-600 focus:text-white",
+                      day_today: "bg-slate-700 text-white",
+                      day_outside: "text-slate-500 opacity-50",
+                      day_disabled: "text-slate-500 opacity-50 cursor-not-allowed",
+                      day_range_middle: "aria-selected:bg-slate-700 aria-selected:text-white",
+                      day_hidden: "invisible",
+                    }}
                   />
                 </PopoverContent>
               </Popover>
