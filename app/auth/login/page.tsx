@@ -45,22 +45,38 @@ export default function LoginPage() {
     }
   }, [searchParams])
 
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
+    
+    // Input validation
+    if (!email.trim()) {
+      setError("Please enter your email address")
+      return
+    }
+    
+    if (!password.trim()) {
+      setError("Please enter your password")
+      return
+    }
+    
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
 
     logAuth("login_attempt", { email })
 
     try {
       setIsLoading(true)
+      setError(null)
       
       const supabase = createLoggedClient()
       
       const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
       })
 
       if (error) {

@@ -10,7 +10,8 @@ console.log('Testing user registration after database fix...')
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function testRegistration() {
-  const testEmail = `testuser${Math.floor(Math.random() * 10000)}@gmail.com`
+  // Use mailinator for valid test emails that actually exist
+  const testEmail = `hrportal-test-${Date.now()}@mailinator.com`
   
   try {
     console.log('\n🧪 Testing registration with email:', testEmail)
