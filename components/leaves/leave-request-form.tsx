@@ -48,88 +48,96 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
     return 0
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
     setError(null)
-
-    // Log form submission attempt
-    logForm("leave_request_form_submitted", "LeaveRequestForm", {
-      leave_type_id: formData.leave_type_id,
-      start_date: formData.start_date?.toISOString().split("T")[0],
-      end_date: formData.end_date?.toISOString().split("T")[0],
-      reason: formData.reason,
-      employee_id: employeeId
-    }, employeeId)
-
-    if (!formData.start_date || !formData.end_date) {
-      logForm("leave_request_validation_failed", "LeaveRequestForm", {
-        error: "missing_dates",
-        has_start_date: !!formData.start_date,
-        has_end_date: !!formData.end_date
-      }, employeeId)
-      setError("Please select both start and end dates")
-      setIsLoading(false)
+    
+    // Validation
+    if (!formData.leave_type_id) {
+      setError("Please select a leave type")
+      return
+    }
+    
+    if (!formData.start_date) {
+      setError("Please select a start date")
+      return
+    }
+    
+    if (!formData.end_date) {
+      setError("Please select an end date")
+      return
+    }
+    
+    if (!formData.reason.trim()) {
+      setError("Please provide a reason for your leave request")
       return
     }
 
-    if (formData.end_date < formData.start_date) {
-      logForm("leave_request_validation_failed", "LeaveRequestForm", {
-        error: "invalid_date_range",
-        start_date: formData.start_date.toISOString().split("T")[0],
-        end_date: formData.end_date.toISOString().split("T")[0]
-      }, employeeId)
-      setError("End date must be after start date")
-      setIsLoading(false)
+    if (formData.start_date > formData.end_date) {
+      setError("End date must be after or equal to start date")
       return
     }
 
-    const supabase = createLoggedClient()
-    const daysRequested = calculateDays()
-
-    // Log calculated values
-    logForm("leave_request_calculation", "LeaveRequestForm", {
-      days_requested: daysRequested,
-      start_date: formData.start_date.toISOString().split("T")[0],
-      end_date: formData.end_date.toISOString().split("T")[0]
-    }, employeeId)
+    setIsLoading(true)
 
     try {
-      const { error } = await supabase.from("leave_requests").insert({
+      logForm("leave_request_form", "submit_started", {
+        leave_type_id: formData.leave_type_id,
+        start_date: formData.start_date.toISOString(),
+        end_date: formData.end_date.toISOString(),
+        days_requested: calculateDays(),
         employee_id: employeeId,
-        leave_type_id: formData.leave_type_id,
-        start_date: formData.start_date.toISOString().split("T")[0],
-        end_date: formData.end_date.toISOString().split("T")[0],
-        days_requested: daysRequested,
-        reason: formData.reason,
-        status: "pending",
       })
 
-      if (error) throw error
-
-      logForm("leave_request_submitted_successfully", "LeaveRequestForm", {
-        leave_type_id: formData.leave_type_id,
-        days_requested: daysRequested,
-        status: "pending"
-      }, employeeId)
-
-      logNavigation("leave_request_redirect", "/dashboard/leaves/new", "/dashboard/leaves", employeeId)
-      router.push("/dashboard/leaves")
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      const supabase = createLoggedClient()
       
-      logException(error instanceof Error ? error : new Error(errorMessage), {
-        component: "LeaveRequestForm",
-        action: "submit_leave_request",
-        payload: {
+      const { data, error: submitError } = await supabase
+        .from("leave_requests")
+        .insert({
+          employee_id: employeeId,
           leave_type_id: formData.leave_type_id,
-          days_requested: daysRequested,
-          employee_id: employeeId
-        },
-        userId: employeeId
+          start_date: formData.start_date.toISOString().split('T')[0],
+          end_date: formData.end_date.toISOString().split('T')[0],
+          days_requested: calculateDays(),
+          reason: formData.reason.trim(),
+          status: "pending",
+        })
+        .select()
+
+      if (submitError) {
+        logException(new Error(submitError.message || "Submit failed"), {
+          component: "leave_request_form",
+          action: "submit_failed",
+          userId: employeeId,
+        })
+        throw submitError
+      }
+
+      logForm("leave_request_form", "submit_success", {
+        request_id: data?.[0]?.id,
+        employee_id: employeeId,
       })
 
-      setError(errorMessage)
+      // Reset form
+      setFormData({
+        leave_type_id: "",
+        start_date: undefined,
+        end_date: undefined,
+        reason: "",
+      })
+
+      // Show success message and redirect
+      alert("Leave request submitted successfully!")
+      router.refresh()
+      
+    } catch (error) {
+      console.error("Error submitting leave request:", error)
+      logException(error instanceof Error ? error : new Error("Unknown error"), {
+        component: "leave_request_form",
+        action: "submit_error",
+        userId: employeeId,
+      })
+      setError("Failed to submit leave request. Please try again.")
     } finally {
       setIsLoading(false)
     }
