@@ -49,18 +49,18 @@ export function LeaveRequestsTable({ requests, showEmployeeColumn = false }: Lea
     return matchesSearch && matchesStatus
   })
 
-  const getStatusColor = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
       case "approved":
-        return "bg-green-600"
+        return "success"
       case "rejected":
-        return "bg-red-600"
+        return "destructive"
       case "pending":
-        return "bg-yellow-600"
+        return "warning"
       case "cancelled":
-        return "bg-slate-600"
+        return "secondary"
       default:
-        return "bg-slate-600"
+        return "secondary"
     }
   }
 
@@ -146,7 +146,7 @@ export function LeaveRequestsTable({ requests, showEmployeeColumn = false }: Lea
                 <TableCell className="text-slate-300">{format(new Date(request.end_date), "MMM dd, yyyy")}</TableCell>
                 <TableCell className="text-slate-300">{request.days_requested}</TableCell>
                 <TableCell>
-                  <Badge className={`${getStatusColor(request.status)} text-white`}>
+                  <Badge variant={getStatusVariant(request.status)}>
                     {request.status.toUpperCase()}
                   </Badge>
                 </TableCell>
