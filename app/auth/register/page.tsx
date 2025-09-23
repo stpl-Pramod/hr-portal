@@ -178,16 +178,46 @@ export default function RegisterPage() {
                   value={formData.department}
                   onValueChange={(value) => setFormData({ ...formData, department: value })}
                 >
-                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Engineering">Engineering</SelectItem>
-                    <SelectItem value="Human Resources">Human Resources</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Sales">Sales</SelectItem>
-                    <SelectItem value="Finance">Finance</SelectItem>
-                    <SelectItem value="Operations">Operations</SelectItem>
+                    <SelectItem value="Engineering">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                        Engineering
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="Human Resources">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                        Human Resources
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="Marketing">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                        Marketing
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="Sales">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                        Sales
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="Finance">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                        Finance
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="Operations">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                        Operations
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

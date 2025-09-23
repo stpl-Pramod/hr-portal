@@ -150,15 +150,18 @@ export function LeaveRequestForm({ leaveTypes, employeeId }: LeaveRequestFormPro
               value={formData.leave_type_id}
               onValueChange={(value) => setFormData({ ...formData, leave_type_id: value })}
             >
-              <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+              <SelectTrigger>
                 <SelectValue placeholder="Select leave type" />
               </SelectTrigger>
               <SelectContent>
                 {leaveTypes.map((type) => (
                   <SelectItem key={type.id} value={type.id}>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: type.color }} />
-                      {type.name} ({type.max_days_per_year} days/year)
+                      <div>
+                        <div className="font-medium">{type.name}</div>
+                        <div className="text-xs text-slate-400">{type.max_days_per_year} days/year</div>
+                      </div>
                     </div>
                   </SelectItem>
                 ))}

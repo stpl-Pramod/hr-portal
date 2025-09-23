@@ -86,29 +86,84 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
             />
           </div>
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger className="w-48 bg-slate-700 border-slate-600 text-white">
+            <SelectTrigger className="w-48">
               <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Department" />
+              <SelectValue placeholder="Filter by department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Departments</SelectItem>
-              <SelectItem value="Engineering">Engineering</SelectItem>
-              <SelectItem value="Human Resources">Human Resources</SelectItem>
-              <SelectItem value="Marketing">Marketing</SelectItem>
-              <SelectItem value="Sales">Sales</SelectItem>
-              <SelectItem value="Finance">Finance</SelectItem>
-              <SelectItem value="Operations">Operations</SelectItem>
+              <SelectItem value="all">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-slate-500"></div>
+                  All Departments
+                </div>
+              </SelectItem>
+              <SelectItem value="Engineering">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  Engineering
+                </div>
+              </SelectItem>
+              <SelectItem value="Human Resources">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  Human Resources
+                </div>
+              </SelectItem>
+              <SelectItem value="Marketing">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                  Marketing
+                </div>
+              </SelectItem>
+              <SelectItem value="Sales">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                  Sales
+                </div>
+              </SelectItem>
+              <SelectItem value="Finance">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                  Finance
+                </div>
+              </SelectItem>
+              <SelectItem value="Operations">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                  Operations
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-32 bg-slate-700 border-slate-600 text-white">
+            <SelectTrigger className="w-36">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-              <SelectItem value="terminated">Terminated</SelectItem>
+              <SelectItem value="all">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-slate-500"></div>
+                  All Status
+                </div>
+              </SelectItem>
+              <SelectItem value="active">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  Active
+                </div>
+              </SelectItem>
+              <SelectItem value="inactive">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                  Inactive
+                </div>
+              </SelectItem>
+              <SelectItem value="terminated">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                  Terminated
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
