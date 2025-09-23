@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Upload, Loader2 } from "lucide-react"
+import { Upload, Loader2, User } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { createLoggedClient } from "@/lib/supabase/logged-client"
 import { logForm, logException } from "@/lib/logger"
@@ -130,8 +130,14 @@ export function ProfileEditForm({ profile, onUpdate }: ProfileEditFormProps) {
             <Avatar className="h-20 w-20">
               <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
               <AvatarFallback className="bg-blue-600 text-white text-lg">
-                {profile.first_name[0]}
-                {profile.last_name[0]}
+                {profile.first_name && profile.last_name ? (
+                  <>
+                    {profile.first_name[0]}
+                    {profile.last_name[0]}
+                  </>
+                ) : (
+                  <User className="h-8 w-8" />
+                )}
               </AvatarFallback>
             </Avatar>
             <div>

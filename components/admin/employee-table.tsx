@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MoreHorizontal, Search, Filter, Plus, Edit, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Search, Filter, Plus, Edit, Trash2, Eye, User } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface Employee {
@@ -196,8 +196,14 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={employee.avatar_url || "/placeholder.svg"} />
                       <AvatarFallback className="bg-blue-600 text-white text-xs">
-                        {employee.first_name[0]}
-                        {employee.last_name[0]}
+                        {employee.first_name && employee.last_name ? (
+                          <>
+                            {employee.first_name[0]}
+                            {employee.last_name[0]}
+                          </>
+                        ) : (
+                          <User className="h-4 w-4" />
+                        )}
                       </AvatarFallback>
                     </Avatar>
                     <div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Mail, Phone, MapPin, Calendar, Building } from "lucide-react"
+import { Mail, Phone, MapPin, Calendar, Building, User } from "lucide-react"
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -42,8 +42,14 @@ export default async function ProfilePage() {
                   <Avatar className="h-24 w-24 mx-auto mb-4">
                     <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
                     <AvatarFallback className="bg-blue-600 text-white text-xl">
-                      {profile.first_name[0]}
-                      {profile.last_name[0]}
+                      {profile.first_name && profile.last_name ? (
+                        <>
+                          {profile.first_name[0]}
+                          {profile.last_name[0]}
+                        </>
+                      ) : (
+                        <User className="h-10 w-10" />
+                      )}
                     </AvatarFallback>
                   </Avatar>
                   <CardTitle className="text-white">

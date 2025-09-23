@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, MessageCircle, Calendar } from "lucide-react"
+import { MoreHorizontal, MessageCircle, Calendar, User } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface TeamMember {
@@ -48,8 +48,14 @@ export function TeamMembersList({ teamMembers }: TeamMembersListProps) {
               <Avatar className="h-12 w-12">
                 <AvatarImage src={member.avatar_url || "/placeholder.svg"} />
                 <AvatarFallback className="bg-blue-600 text-white">
-                  {member.first_name[0]}
-                  {member.last_name[0]}
+                  {member.first_name && member.last_name ? (
+                    <>
+                      {member.first_name[0]}
+                      {member.last_name[0]}
+                    </>
+                  ) : (
+                    <User className="h-6 w-6" />
+                  )}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">

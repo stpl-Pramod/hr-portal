@@ -82,8 +82,14 @@ export function Sidebar({ profile }: SidebarProps) {
         <Avatar className="h-10 w-10">
           <AvatarImage src={profile.avatar_url || "/placeholder.svg"} />
           <AvatarFallback className="bg-blue-600 text-white">
-            {profile.first_name[0]}
-            {profile.last_name[0]}
+            {profile.first_name && profile.last_name ? (
+              <>
+                {profile.first_name[0]}
+                {profile.last_name[0]}
+              </>
+            ) : (
+              <User className="h-5 w-5" />
+            )}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">

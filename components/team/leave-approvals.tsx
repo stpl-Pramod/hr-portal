@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, X, Calendar, Clock } from "lucide-react"
+import { Check, X, Calendar, Clock, User } from "lucide-react"
 import { format } from "date-fns"
 import { createClient } from "@/lib/supabase/client"
 
@@ -105,8 +105,14 @@ export function LeaveApprovals({ leaveRequests, onUpdate }: LeaveApprovalsProps)
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={request.profiles.avatar_url || "/placeholder.svg"} />
                   <AvatarFallback className="bg-blue-600 text-white">
-                    {request.profiles.first_name[0]}
-                    {request.profiles.last_name[0]}
+                    {request.profiles.first_name && request.profiles.last_name ? (
+                      <>
+                        {request.profiles.first_name[0]}
+                        {request.profiles.last_name[0]}
+                      </>
+                    ) : (
+                      <User className="h-5 w-5" />
+                    )}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
