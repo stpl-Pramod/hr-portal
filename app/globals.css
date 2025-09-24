@@ -146,7 +146,51 @@ textarea, input {
   outline-width: 2px;
   outline-offset: 2px;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Performance optimizations */
+.animate-in,
+.animate-out {
+  animation-fill-mode: both;
+}
+
+/* Scroll optimization */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Focus management */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.loading {
+  cursor: wait;
+}
+
+/* Prevent layout shift */
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  * {
+    scroll-padding-top: 1rem;
+  }
 }
